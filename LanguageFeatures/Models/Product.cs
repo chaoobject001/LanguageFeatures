@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LanguageFeatures.Models
 {
-    class Product
+    public class Product
     {
         public string Name { get; set; }
         public int ProductID { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LanguageFeatures.Models
 {
-    class ShoppingCart
+    public class ShoppingCart
     {
         public List<Product> Products { get; set; }
     }
