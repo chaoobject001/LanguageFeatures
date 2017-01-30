@@ -112,8 +112,18 @@ namespace LanguageFeatures.Controllers
                 }
             };
             string category = "Soccer";
+            // define filter criteria via delegate / Func
+            /*
+            Func<Product, bool> categoryFilter = delegate (Product prod)
+            {
+                return prod.Category == "Soccer";
+            };
+            */
+            // Lambda expression
+            // Func<Product, bool> categoryFilter = prod => prod.Category == "Soccer";
+
             decimal total = 0;
-            foreach (Product prod in products.FilterByCategory(category))
+            foreach (Product prod in products.Filter(prod => prod.Category == "Soccer" && prod.Price > 20))
             {
                 total += prod.Price;
             }
