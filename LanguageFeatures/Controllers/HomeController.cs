@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using LanguageFeatures.Models;
@@ -181,6 +182,26 @@ namespace LanguageFeatures.Controllers
             products[3] = new Product { Name = "MissedItem", Price = 10000M };
 
             return View("Result", (object)String.Format("Sum: {0:c}", results));
+        }
+
+        // Anonymously typed objects
+        public ViewResult CreateAnonArray()
+        {
+            var solidArray = new[]
+            {
+                new { Initial = 'S', Principle = "Single Responsibility Principle" },
+                new { Initial = 'O', Principle = "Open / Close Principle"},
+                new { Initial = 'L', Principle = "Liskov Substitution Principle"},
+                new { Initial = 'I', Principle = "Interface Segregation Principle"},
+                new { Initial = 'D', Principle = "Dependency Inversion Principle"} 
+            };
+            StringBuilder solidPrinciples = new StringBuilder();
+            foreach (var item in solidArray)
+            {
+                solidPrinciples.AppendLine(item.Initial.ToString()).Append(": ").Append(item.Principle).Append("; ");
+            }
+            
+            return View("Result", (object)solidPrinciples.ToString());
         }
     }
 }
