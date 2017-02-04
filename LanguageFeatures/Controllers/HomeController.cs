@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LanguageFeatures.Models;
+using System.Text;
 
 namespace LanguageFeatures.Controllers
 {
@@ -129,6 +130,57 @@ namespace LanguageFeatures.Controllers
             }
 
             return View("Result", (object)String.Format("Category: {0}; Total: {1}", category, total));
+        }
+
+        public ViewResult FindTopThreeExpensiveProducts()
+        {
+            Product[] products=  {
+                    new Product { Name = "Kayak", Category = "Watersports", Price = 275M },
+                    new Product { Name = "Lifejacket", Category = "Watersports", Price = 48.95M },
+                    new Product { Name = "Soccer ball", Category = "Soccer", Price = 19.50M },
+                    new Product { Name = "Corner flag", Category = "Soccer", Price = 34.95M }
+                };
+            // Use LINQ query syntax
+            //var descendingProducts = from prod in products
+            //                         orderby prod.Price descending
+            //                         select new { prod.Name, prod.Price };
+
+            // Use LINQ Dot notation
+            var descendingProducts = products.OrderByDescending(e => e.Price)
+                                        .Take(3)
+                                        .Select(e => new { e.Name, e.Price});
+
+            // Use deferred LINQ extension Methods
+            products[3] = new Product { Name = "Gumption", Price = 100M }; 
+
+            // int count = 0;
+            StringBuilder result = new StringBuilder();
+            // query is NOT evaluate unitl the results are enumerated
+            // everytime results are enumerated the result reflect the current state of source data
+            foreach (var p in descendingProducts) {
+                result.AppendFormat("Price: {0} ", p.Price);
+                // if (++count == 3)
+                // {
+                    //break;
+                //}
+            }
+            return View("Result", (object)result.ToString());
+        }
+
+        public ViewResult SumOfProducts()
+        {
+            Product[] products =  {
+                    new Product { Name = "Kayak", Category = "Watersports", Price = 275M },
+                    new Product { Name = "Lifejacket", Category = "Watersports", Price = 48.95M },
+                    new Product { Name = "Soccer ball", Category = "Soccer", Price = 19.50M },
+                    new Product { Name = "Corner flag", Category = "Soccer", Price = 34.95M }
+                };
+
+            var results = products.Sum(e => e.Price);
+
+            products[3] = new Product { Name = "MissedItem", Price = 10000M };
+
+            return View("Result", (object)String.Format("Sum: {0:c}", results));
         }
     }
 }
